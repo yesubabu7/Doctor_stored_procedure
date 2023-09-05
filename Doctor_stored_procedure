@@ -1,14 +1,16 @@
 SELECT CalculateWorkingDays(3);
 
-select * from DoctorSchedule_Bhaskar;
-insert into ajayschedule values(20,1,123,'09:00:00','12:00:00',15);
-select * from  ajayappointmentslots;
+select * from DoctorSchedule_yesu;;
 
-delete  from ajayappointmentslots;
+select * from  yesuappointmentslots;
+
+delete  from yesuappointmentslots;
 
 DROP FUNCTION CalculateWorkingDays();
 
  SELECT * FROM DoctorAvailability;
+
+
 
 CREATE OR REPLACE FUNCTION CalculateWorkingDays(in ide INT) RETURNS VARCHAR(500) AS $$
 DECLARE 
@@ -101,7 +103,7 @@ BEGIN
     FOR scheduleRecord IN
 		
         SELECT doctorid, doctorschedule, doctoravailablefrom, doctoravailableto, doctoravailableslot
-        FROM  DoctorSchedule_Bhaskar
+        FROM  DoctorSchedule_yesu
         WHERE DoctorID = inDoctorID
     LOOP
 		raise notice 'getdata';
@@ -132,7 +134,7 @@ BEGIN
 				raise notice 'hii';
 				 
                 -- Insert the time slot into the ajayappointementslots table
-                INSERT INTO  ajayappointmentslots (slotdoctorid,slotdate,slotfrom,slotto,slotstatus)
+                INSERT INTO yesuappointmentslots (slotdoctorid,slotdate,slotfrom,slotto,slotstatus)
                 VALUES (doctorScheduleID,inProcessDate, updatedTimeFrom, updatedTimeTo,'available');
 
                 -- Increment updatedTimeFrom for the next time slot
@@ -147,8 +149,19 @@ $$ LANGUAGE plpgsql;
 
 
 
+select * from DoctorSchedule_yesu;
+
+INSERT INTO yesuappointmentslots
+SELECT *
+FROM ajayappointmentslots;
+
+select * from yesuappointmentslots;
 
 
 
 
+CREATE TABLE  yesuappointmentslots AS
+SELECT *
+FROM  ajayappointmentslots
+WHERE false; -- This creates an empty table with the same structure
 
